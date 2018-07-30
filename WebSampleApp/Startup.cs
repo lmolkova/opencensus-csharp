@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Grpc.Core;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +26,16 @@ namespace WebSampleApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ITraceComponent, TraceComponent>();
+            services.AddSingleton<ITracer>(sp =>
+            {
+                var component = sp.GetRequiredService<ITraceComponent>();
+                return component.Tracer;
+            });
+
             services.AddSingleton<IHandler>(new OcdHandler("127.0.0.1:50051", ChannelCredentials.Insecure));
 
-            var subs = new DiagnosticSourceSubscriber(new HashSet<string>{"Microsoft.AspNetCore", "HttpHandlerDiagnosticListener" });
-
-            services.AddSingleton<DiagnosticSourceSubscriber>(subs);
-
+            //var server = LocalForwarderProto.Program.StartServer();
+            //services.AddSingleton(server);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -41,12 +45,14 @@ namespace WebSampleApp
 //            TelemetryConfiguration config,
             ITraceComponent traceComponent,
             IHandler ocd,
-            DiagnosticSourceSubscriber subscriber,
+            //Server ocdServer,
             IApplicationLifetime applicationLifetime)
         {
             traceComponent.ExportComponent.SpanExporter.RegisterHandler("ocd", ocd);
+            var subscriber = new DiagnosticSourceSubscriber(new HashSet<string> { "Microsoft.AspNetCore", "HttpHandlerDiagnosticListener" },
+                traceComponent.Tracer);
+
             subscriber.Subscribe();
-            applicationLifetime.ApplicationStopping.Register(subscriber.Dispose);
 //            config.DisableTelemetry = true;
 //            TelemetryConfiguration.Active.DisableTelemetry = true;
 
@@ -62,6 +68,12 @@ namespace WebSampleApp
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            applicationLifetime.ApplicationStopping.Register( () =>
+            {
+                subscriber.Dispose();
+                //ocdServer.ShutdownAsync().Wait();
+            });
         }
     }
 }

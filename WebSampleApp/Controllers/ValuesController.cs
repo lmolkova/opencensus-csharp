@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Steeltoe.Management.Census.Trace;
 
 namespace WebSampleApp.Controllers
 {
@@ -9,10 +10,17 @@ namespace WebSampleApp.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ITracer tracer;
+        public ValuesController(ITracer tracer)
+        {
+            this.tracer = tracer;
+        }
+
         // GET api/values
         [HttpGet]
         public async Task<ActionResult<IEnumerable<string>>> Get()
         {
+            tracer.CurrentSpan.AddAnnotation("executing controller");
             using (var hc = new HttpClient())
             {
                 await hc.GetAsync("http://microsoft.com");

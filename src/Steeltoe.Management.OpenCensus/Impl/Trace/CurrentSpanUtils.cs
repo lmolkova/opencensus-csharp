@@ -8,13 +8,7 @@ namespace Steeltoe.Management.Census.Trace
 {
     internal static class CurrentSpanUtils
     {
-        public static ISpan CurrentSpan
-        {
-            get
-            {
-                return AsyncLocalContext.CurrentSpan;
-            }
-        }
+        public static ISpan CurrentSpan => AsyncLocalContext.CurrentSpan;
 
         public static IScope WithSpan(ISpan span, bool endSpan)
         {
@@ -25,7 +19,7 @@ namespace Steeltoe.Management.Census.Trace
         {
             private readonly ISpan origContext;
             private readonly ISpan span;
-            private bool endSpan;
+            private readonly bool endSpan;
             public ScopeInSpan(ISpan span, bool endSpan)
             {
                 this.span = span;

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalForwarderProto", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSampleApp", "WebSampleApp\WebSampleApp.csproj", "{A2E2FE0F-2B58-468F-A413-B619605F3845}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalServerTests", "LocalServerTests\LocalServerTests.csproj", "{B3BEC734-3D40-4969-8A8B-7E9E392F80C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A2E2FE0F-2B58-468F-A413-B619605F3845}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2E2FE0F-2B58-468F-A413-B619605F3845}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2E2FE0F-2B58-468F-A413-B619605F3845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3BEC734-3D40-4969-8A8B-7E9E392F80C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3BEC734-3D40-4969-8A8B-7E9E392F80C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3BEC734-3D40-4969-8A8B-7E9E392F80C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3BEC734-3D40-4969-8A8B-7E9E392F80C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

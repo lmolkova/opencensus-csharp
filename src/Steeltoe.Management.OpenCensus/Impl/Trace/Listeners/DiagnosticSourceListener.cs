@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Steeltoe.Management.Census.Trace;
 
 namespace Steeltoe.Management.Census.Impl.Trace.Listeners
 {
@@ -11,10 +12,10 @@ namespace Steeltoe.Management.Census.Impl.Trace.Listeners
 
         public IDisposable Subscription { get; set; }
 
-        public DiagnosticSourceListener(string sourceName)
+        public DiagnosticSourceListener(string sourceName, ITracer tracer)
         {
             this.sourceName = sourceName;
-            this.handler = ListenerHandlerFactory.GetHandler(sourceName);
+            this.handler = ListenerHandlerFactory.GetHandler(sourceName, tracer);
         }
 
         public void OnCompleted()
@@ -29,7 +30,7 @@ namespace Steeltoe.Management.Census.Impl.Trace.Listeners
         {
             if (Activity.Current == null)
             {
-                Debug.WriteLine("Activity is null");
+                Debug.WriteLine("Activity is null " + value.Key);
                 return;
             }
 

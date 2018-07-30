@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Steeltoe.Management.Census.Trace
+﻿namespace Steeltoe.Management.Census.Trace
 {
     public static class SpanAttributeConstants
     {
@@ -29,7 +25,5 @@ namespace Steeltoe.Management.Census.Trace
 
         public const string ErrorKey = "error";
         public const string ErrorStackTrace = "error.stack.trace";
-
-
     }
 }

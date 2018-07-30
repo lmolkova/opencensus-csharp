@@ -41,11 +41,25 @@ namespace Steeltoe.Management.Census.Impl.Trace.Export.Grpc
 
         private Span FromISpanData(ISpanData source)
         {
+            Span.Types.SpanKind kind;
+            if (source.Attributes.AttributeMap.TryGetValue(SpanAttributeConstants.SpanKindKey, out var value))
+            {
+                kind = value.Match(s => s, b => null, i => null, s => s.ToString()) == SpanAttributeConstants.ClientSpanKind
+                    ? Span.Types.SpanKind.Client
+                    : Span.Types.SpanKind.Server;
+            }
+            else
+            {
+                kind = source.HasRemoteParent.GetValueOrDefault()
+                    ? Span.Types.SpanKind.Server
+                    : Span.Types.SpanKind.Client;
+            }
+
             return new Span
             {
                 // TODO: kind
-                Kind = source.HasRemoteParent.GetValueOrDefault() ? Span.Types.SpanKind.Server :
-                    source.ParentSpanId != null ? Span.Types.SpanKind.Client : Span.Types.SpanKind.Unspecified,
+              
+                Kind = kind,
                 StartTime = new Timestamp
                 {
                     Nanos = source.StartTimestamp.Nanos,

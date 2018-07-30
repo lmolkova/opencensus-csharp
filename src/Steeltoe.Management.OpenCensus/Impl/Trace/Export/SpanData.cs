@@ -66,36 +66,12 @@ namespace Steeltoe.Management.Census.Trace.Export
             this.Context = context;
             this.ParentSpanId = parentSpanId;
             this.HasRemoteParent = hasRemoteParent;
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-            this.Name = name;
-            if (startTimestamp == null)
-            {
-                throw new ArgumentNullException(nameof(startTimestamp));
-            }
-            this.StartTimestamp = startTimestamp;
-            if (attributes == null)
-            {
-                throw new ArgumentNullException(nameof(attributes));
-            }
-            this.Attributes = attributes;
-            if (annotations == null)
-            {
-                throw new ArgumentNullException(nameof(annotations));
-            }
-            this.Annotations = annotations;
-            if (messageEvents == null)
-            {
-                throw new ArgumentNullException(nameof(messageEvents));
-            }
-            this.MessageEvents = messageEvents;
-            if (links == null)
-            {
-                throw new ArgumentNullException(nameof(links));
-            }
-            this.Links = links;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name));
+            this.StartTimestamp = startTimestamp ?? throw new ArgumentNullException(nameof(startTimestamp));
+            this.Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+            this.Annotations = annotations ?? throw new ArgumentNullException(nameof(annotations));
+            this.MessageEvents = messageEvents ?? throw new ArgumentNullException(nameof(messageEvents));
+            this.Links = links ?? throw new ArgumentNullException(nameof(links));
             this.ChildSpanCount = childSpanCount;
             this.Status = status;
             this.EndTimestamp = endTimestamp;

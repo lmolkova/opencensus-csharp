@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using Steeltoe.Management.Census.Trace;
 
 namespace Steeltoe.Management.Census.Impl.Trace.Listeners
 {
@@ -12,11 +13,13 @@ namespace Steeltoe.Management.Census.Impl.Trace.Listeners
         private ConcurrentDictionary<string, DiagnosticSourceListener> subscriptions;
         private bool disposing;
         private IDisposable subscription;
+        private readonly ITracer tracer;
 
-        public DiagnosticSourceSubscriber(HashSet<string> sourceNames)
+        public DiagnosticSourceSubscriber(HashSet<string> sourceNames, ITracer tracer)
         {
             subscriptions = new ConcurrentDictionary<string, DiagnosticSourceListener>();
             this.sourceNames = sourceNames;
+            this.tracer = tracer;
         }
 
         public void Subscribe()
@@ -35,7 +38,7 @@ namespace Steeltoe.Management.Census.Impl.Trace.Listeners
                 {
                     subscriptions.GetOrAdd(value.Name, name =>
                     {
-                        var dl = new DiagnosticSourceListener(value.Name);
+                        var dl = new DiagnosticSourceListener(value.Name, tracer);
                         dl.Subscription = value.Subscribe(dl);
                         return dl;
                     });

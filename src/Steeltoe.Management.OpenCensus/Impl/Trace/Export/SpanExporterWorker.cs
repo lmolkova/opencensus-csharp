@@ -103,6 +103,7 @@ namespace Steeltoe.Management.Census.Trace.Export
                 try
                 {
                     tasks.Add(handler.ExportAsync(export));
+                    Console.WriteLine("sent spans");
                 }
                 catch (Exception e)
                 {
